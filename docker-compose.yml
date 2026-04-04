@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "${MOOD_WEATHER_BACKEND_PORT:-42001}:42001"
+    environment:
+      - MOOD_WEATHER_API_KEY=${MOOD_WEATHER_API_KEY:-dev-secret-key}
+      - MOOD_WEATHER_DB_HOST=${MOOD_WEATHER_DB_HOST:-postgres}
+      - MOOD_WEATHER_DB_PORT=${MOOD_WEATHER_DB_PORT:-5432}
+      - MOOD_WEATHER_DB_NAME=${MOOD_WEATHER_DB_NAME:-moodweather}
+      - MOOD_WEATHER_DB_USER=${MOOD_WEATHER_DB_USER:-mooduser}
+      - MOOD_WEATHER_DB_PASSWORD=${MOOD_WEATHER_DB_PASSWORD:-moodpass}
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:18.3-alpine
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-moodweather}
+      - POSTGRES_USER=${POSTGRES_USER:-mooduser}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-moodpass}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/mood_weather/data/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mooduser} -d ${POSTGRES_DB:-moodweather}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:9.9
+    ports:
+      - "${PGADMIN_PORT:-42003}:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-admin@moodweather.local}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-admin}
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  client-web-react:
+    build:
+      context: ./client-web-react
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_TARGET=${VITE_API_TARGET:-http://backend:42001}
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2.10-alpine
+    ports:
+      - "${CADDY_PORT:-42002}:42002"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+    depends_on:
+      - backend
+      - client-web-react
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

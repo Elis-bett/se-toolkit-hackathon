@@ -1,0 +1,19 @@
+[project]
+name = "se-toolkit-mood-weather"
+version = "0.1.0"
+description = "Mood Weather - A visual mood tracking lab project"
+requires-python = ">=3.12"
+
+[tool.uv]
+members = [
+    "backend",
+    # "mcp/mcp-mood-weather",  # Uncomment in later tasks
+]
+
+[tool.poe.tasks]
+dev = "uv run --project backend --with dev python -m lms_backend.run"
+check = "uv run --with pyright --with ruff pyright backend && uv run --with ruff ruff check backend"
+test = "uv run --with pytest pytest backend/tests"
+test-unit = "uv run --with pytest pytest backend/tests/unit"
+test-e2e = "uv run --with pytest pytest backend/tests/e2e"
+export-openapi = "uv run --project backend python -c \"from lms_backend.main import app; import json; json.dump(app.openapi(), open('backend/openapi.json', 'w'), indent=2)\""

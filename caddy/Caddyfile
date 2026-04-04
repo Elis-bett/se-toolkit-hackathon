@@ -1,0 +1,40 @@
+{
+    http_port 42002
+}
+
+:42002 {
+    # API routes - proxy to backend
+    handle /moods* {
+        reverse_proxy backend:42001
+    }
+
+    handle /users* {
+        reverse_proxy backend:42001
+    }
+
+    handle /analytics* {
+        reverse_proxy backend:42001
+    }
+
+    handle /docs* {
+        reverse_proxy backend:42001
+    }
+
+    handle /openapi.json {
+        reverse_proxy backend:42001
+    }
+
+    handle /health {
+        reverse_proxy backend:42001
+    }
+
+    # Utility routes (protected in production)
+    handle /utils/* {
+        reverse_proxy pgadmin:80
+    }
+
+    # Serve React SPA at root
+    handle {
+        reverse_proxy client-web-react:80
+    }
+}
