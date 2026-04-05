@@ -288,3 +288,82 @@ textarea {
   color: var(--text-secondary);
   font-size: 0.875rem;
 }
+
+/* Mood Calendar */
+.mood-calendar {
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.calendar-header h3 {
+  font-size: 1.25rem;
+}
+
+.calendar-header button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-card);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.calendar-header button:hover {
+  background: var(--bg-primary);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day-name {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 0.5rem 0;
+}
+
+.calendar-cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  min-height: 50px;
+  position: relative;
+}
+
+.calendar-cell.today {
+  border-color: var(--accent);
+  border-width: 2px;
+}
+
+.calendar-cell.has-entry {
+  background: var(--bg-primary);
+}
+
+.calendar-day {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.calendar-weather {
+  font-size: 1.25rem;
+  line-height: 1;
+}
