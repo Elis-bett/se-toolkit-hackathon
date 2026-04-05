@@ -13,9 +13,18 @@ interface MoodEntry {
 
 const WEATHER_OPTIONS = [
   { value: 'sunny', label: 'Sunny', emoji: '☀️' },
+  { value: 'partly_cloudy', label: 'Partly Cloudy', emoji: '⛅' },
   { value: 'cloudy', label: 'Cloudy', emoji: '☁️' },
+  { value: 'foggy', label: 'Foggy', emoji: '🌫️' },
   { value: 'rainy', label: 'Rainy', emoji: '🌧️' },
+  { value: 'snowy', label: 'Snowy', emoji: '❄️' },
+  { value: 'windy', label: 'Windy', emoji: '💨' },
+  { value: 'hail', label: 'Hail', emoji: '🧊' },
+  { value: 'rainbow', label: 'Rainbow', emoji: '🌈' },
+  { value: 'hot', label: 'Hot', emoji: '🔥' },
+  { value: 'freezing', label: 'Freezing', emoji: '🥶' },
   { value: 'stormy', label: 'Stormy', emoji: '⛈️' },
+  { value: 'tornado', label: 'Tornado', emoji: '🌪️' },
 ];
 
 function App() {

@@ -27,16 +27,34 @@ ChartJS.register(
 
 const WEATHER_LABELS: Record<string, string> = {
   sunny: '☀️ Sunny',
+  partly_cloudy: '⛅ Partly Cloudy',
   cloudy: '☁️ Cloudy',
+  foggy: '🌫️ Foggy',
   rainy: '🌧️ Rainy',
+  snowy: '❄️ Snowy',
+  windy: '💨 Windy',
+  hail: '🧊 Hail',
+  rainbow: '🌈 Rainbow',
+  hot: '🔥 Hot',
+  freezing: '🥶 Freezing',
   stormy: '⛈️ Stormy',
+  tornado: '🌪️ Tornado',
 };
 
 const WEATHER_COLORS: Record<string, string> = {
   sunny: '#f6e05e',
+  partly_cloudy: '#fbd38d',
   cloudy: '#a0aec0',
+  foggy: '#cbd5e0',
   rainy: '#63b3ed',
+  snowy: '#e2e8f0',
+  windy: '#90cdf4',
+  hail: '#b794f4',
+  rainbow: '#f687b3',
+  hot: '#fc8181',
+  freezing: '#90cdf4',
   stormy: '#4a5568',
+  tornado: '#718096',
 };
 
 interface DashboardProps {
@@ -112,10 +130,19 @@ function Dashboard({ userId }: DashboardProps) {
               label: 'Mood',
               data: timeline.map((entry) => {
                 const values: Record<string, number> = {
-                  sunny: 4,
-                  cloudy: 3,
-                  rainy: 2,
-                  stormy: 1,
+                  sunny: 13,
+                  partly_cloudy: 12,
+                  cloudy: 11,
+                  foggy: 10,
+                  rainy: 9,
+                  snowy: 8,
+                  windy: 7,
+                  hail: 6,
+                  rainbow: 5,
+                  hot: 4,
+                  freezing: 3,
+                  stormy: 2,
+                  tornado: 1,
                 };
                 return values[entry.weather_type] || 0;
               }),

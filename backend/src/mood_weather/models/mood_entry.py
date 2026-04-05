@@ -12,7 +12,11 @@ class MoodEntryBase(SQLModel):
     user_id: str = Field(index=True)
     entry_date: date = Field(index=True)
     weather_type: str = Field(
-        description="Weather icon representing the mood: sunny, cloudy, rainy, stormy"
+        description=(
+            "Weather icon representing the mood: "
+            "sunny, partly_cloudy, cloudy, foggy, rainy, snowy, windy, hail, "
+            "rainbow, hot, freezing, stormy, tornado"
+        )
     )
     note: Optional[str] = Field(default=None, max_length=500)
 
