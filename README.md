@@ -16,6 +16,24 @@ Mood Weather is a simple but complete mood tracking application that lets users 
 
 **Core feature:** Daily mood selection with weather icons — one tap per day, displayed as a monthly calendar view where each day shows a weather icon instead of a number or text.
 
+**Available mood types (13 weather states):**
+
+| Weather Type | Emoji | Mood Meaning |
+|-------------|-------|--------------|
+| sunny | ☀️ | Excellent, happy, energetic |
+| partly_cloudy | ⛅ | Good, mostly positive |
+| cloudy | ☁️ | Neutral, okay |
+| foggy | 🌫️ | Unclear, confused, tired |
+| rainy | 🌧️ | Sad, melancholic |
+| snowy | ❄️ | Calm, peaceful, quiet |
+| windy | 💨 | Restless, anxious, busy |
+| hail | 🧊 | Harsh, overwhelmed |
+| rainbow | 🌈 | Hopeful, grateful, inspired |
+| hot | 🔥 | Passionate, intense, motivated |
+| freezing | 🥶 | Numb, disconnected, isolated |
+| stormy | ⛈️ | Angry, frustrated, turbulent |
+| tornado | 🌪️ | Chaotic, out of control |
+
 **Additional feature:** Mood trends — a simple bar chart showing how many sunny/cloudy/rainy days the user had over the past month.
 
 ## Architecture

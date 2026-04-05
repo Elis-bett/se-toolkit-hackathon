@@ -7,9 +7,18 @@
   --accent-hover: #3182ce;
   --border: #e2e8f0;
   --sunny: #f6e05e;
+  --partly-cloudy: #fbd38d;
   --cloudy: #a0aec0;
+  --foggy: #cbd5e0;
   --rainy: #63b3ed;
+  --snowy: #e2e8f0;
+  --windy: #90cdf4;
+  --hail: #b794f4;
+  --rainbow: #f687b3;
+  --hot: #fc8181;
+  --freezing: #90cdf4;
   --stormy: #4a5568;
+  --tornado: #718096;
 }
 
 * {
@@ -136,7 +145,7 @@ body {
 
 .weather-selector {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 0.75rem;
   margin-bottom: 1rem;
 }
