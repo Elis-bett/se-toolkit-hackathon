@@ -27,6 +27,49 @@ const WEATHER_OPTIONS = [
   { value: 'tornado', label: 'Tornado', emoji: '🌪️' },
 ];
 
+const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+function getCalendarDays(year: number, month: number): (number | null)[][] {
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const daysInMonth = lastDay.getDate();
+
+  // Monday = 0, Sunday = 6
+  let startDay = firstDay.getDay() - 1;
+  if (startDay < 0) startDay = 6;
+
+  const weeks: (number | null)[][] = [];
+  let currentWeek: (number | null)[] = [];
+
+  // Fill leading nulls
+  for (let i = 0; i < startDay; i++) {
+    currentWeek.push(null);
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    currentWeek.push(day);
+    if (currentWeek.length === 7) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  }
+
+  // Fill trailing nulls
+  if (currentWeek.length > 0) {
+    while (currentWeek.length < 7) {
+      currentWeek.push(null);
+    }
+    weeks.push(currentWeek);
+  }
+
+  return weeks;
+}
+
 function App() {
   const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem('mood_api_key') || '');
   const [userId, setUserId] = useState<string>(() => localStorage.getItem('mood_user_id') || '');
@@ -37,6 +80,9 @@ function App() {
   const [selectedWeather, setSelectedWeather] = useState('sunny');
   const [note, setNote] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+
+  const [calendarMonth, setCalendarMonth] = useState(new Date().getMonth());
+  const [calendarYear, setCalendarYear] = useState(new Date().getFullYear());
 
   useEffect(() => {
     if (apiKey) {
@@ -189,6 +235,68 @@ function App() {
                 })}
               </div>
             )}
+          </div>
+
+          <div className="mood-calendar">
+            <div className="calendar-header">
+              <button onClick={() => {
+                if (calendarMonth === 0) {
+                  setCalendarMonth(11);
+                  setCalendarYear(calendarYear - 1);
+                } else {
+                  setCalendarMonth(calendarMonth - 1);
+                }
+              }}>◀</button>
+              <h3>{MONTH_NAMES[calendarMonth]} {calendarYear}</h3>
+              <button onClick={() => {
+                if (calendarMonth === 11) {
+                  setCalendarMonth(0);
+                  setCalendarYear(calendarYear + 1);
+                } else {
+                  setCalendarMonth(calendarMonth + 1);
+                }
+              }}>▶</button>
+            </div>
+
+            <div className="calendar-grid">
+              {DAYS_OF_WEEK.map((day) => (
+                <div key={day} className="calendar-day-name">{day}</div>
+              ))}
+
+              {getCalendarDays(calendarYear, calendarMonth).flatMap((week, weekIdx) =>
+                week.map((day, dayIdx) => {
+                  const dateStr = day
+                    ? `${calendarYear}-${String(calendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+                    : null;
+                  const entry = dateStr
+                    ? entries.find((e) => e.entry_date === dateStr)
+                    : null;
+                  const weather = entry
+                    ? WEATHER_OPTIONS.find((w) => w.value === entry.weather_type)
+                    : null;
+                  const isToday =
+                    dateStr === new Date().toISOString().split('T')[0];
+
+                  return (
+                    <div
+                      key={`${weekIdx}-${dayIdx}`}
+                      className={`calendar-cell${isToday ? ' today' : ''}${entry ? ' has-entry' : ''}`}
+                    >
+                      {day ? (
+                        <>
+                          <span className="calendar-day">{day}</span>
+                          {weather && (
+                            <span className="calendar-weather" title={weather.label}>
+                              {weather.emoji}
+                            </span>
+                          )}
+                        </>
+                      ) : null}
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </div>
       ) : (
