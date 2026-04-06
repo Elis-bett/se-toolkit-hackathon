@@ -39,3 +39,17 @@ class MoodEntryRead(MoodEntryBase):
 
     id: int
     created_at: datetime
+
+
+class MoodEntryUpdate(SQLModel):
+    """Schema for updating a mood entry."""
+
+    weather_type: Optional[str] = Field(
+        default=None,
+        description=(
+            "Weather icon representing the mood: "
+            "sunny, partly_cloudy, cloudy, foggy, rainy, snowy, windy, hail, "
+            "rainbow, hot, freezing, stormy, tornado"
+        )
+    )
+    note: Optional[str] = Field(default=None, max_length=500)

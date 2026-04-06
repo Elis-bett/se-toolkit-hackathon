@@ -8,11 +8,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
 from mood_weather.database import get_session
-from mood_weather.models.mood_entry import MoodEntry, MoodEntryCreate, MoodEntryRead
+from mood_weather.models.mood_entry import MoodEntry, MoodEntryCreate, MoodEntryRead, MoodEntryUpdate
 from mood_weather.db.mood_entries import (
     create_mood_entry,
     get_mood_entries_by_user,
     get_mood_entry_by_user_and_date,
+    update_mood_entry,
 )
 
 router = APIRouter(prefix="/moods", tags=["moods"])
@@ -80,3 +81,21 @@ async def delete_mood_entry(
 
     await session.delete(entry)
     await session.commit()
+
+
+@router.put("/{entry_id}", response_model=MoodEntryRead)
+async def update_mood_entry_endpoint(
+    entry_id: int,
+    update_data: MoodEntryUpdate,
+    session: AsyncSession = Depends(get_session),
+) -> MoodEntryRead:
+    """Update an existing mood entry."""
+    entry = await update_mood_entry(
+        session,
+        entry_id=entry_id,
+        weather_type=update_data.weather_type,
+        note=update_data.note,
+    )
+    if not entry:
+        raise HTTPException(status_code=404, detail="Mood entry not found")
+    return entry

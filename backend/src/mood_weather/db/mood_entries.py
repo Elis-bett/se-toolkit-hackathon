@@ -69,3 +69,27 @@ async def get_mood_entry_by_user_and_date(
     )
     result = await session.execute(stmt)
     return result.scalars().first()
+
+
+async def update_mood_entry(
+    session: AsyncSession,
+    entry_id: int,
+    weather_type: Optional[str] = None,
+    note: Optional[str] = None,
+) -> Optional[MoodEntry]:
+    """Update an existing mood entry."""
+    stmt = select(MoodEntry).where(MoodEntry.id == entry_id)
+    result = await session.execute(stmt)
+    entry = result.scalars().first()
+    if not entry:
+        return None
+
+    if weather_type is not None:
+        entry.weather_type = weather_type
+    if note is not None:
+        entry.note = note
+
+    session.add(entry)
+    await session.commit()
+    await session.refresh(entry)
+    return entry

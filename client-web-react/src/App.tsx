@@ -80,6 +80,7 @@ function App() {
   const [selectedWeather, setSelectedWeather] = useState('sunny');
   const [note, setNote] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [editingEntryId, setEditingEntryId] = useState<number | null>(null);
 
   const [calendarMonth, setCalendarMonth] = useState(new Date().getMonth());
   const [calendarYear, setCalendarYear] = useState(new Date().getFullYear());
@@ -128,6 +129,40 @@ function App() {
       fetchEntries();
     } else {
       alert('Failed to save mood entry');
+    }
+  };
+
+  const handleEditEntry = async (entryId: number, newWeather: string, newNote: string | null) => {
+    const baseUrl = import.meta.env.VITE_API_TARGET || '';
+    const response = await fetch(`${baseUrl}/moods/${entryId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        weather_type: newWeather,
+        note: newNote,
+      }),
+    });
+
+    if (response.ok) {
+      setEditingEntryId(null);
+      fetchEntries();
+    } else {
+      alert('Failed to update mood entry');
+    }
+  };
+
+  const handleDeleteEntry = async (entryId: number) => {
+    if (!confirm('Are you sure you want to delete this entry?')) return;
+
+    const baseUrl = import.meta.env.VITE_API_TARGET || '';
+    const response = await fetch(`${baseUrl}/moods/${entryId}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok || response.status === 204) {
+      fetchEntries();
+    } else {
+      alert('Failed to delete mood entry');
     }
   };
 
@@ -223,13 +258,85 @@ function App() {
               <div className="entries-list">
                 {entries.slice(0, 10).map((entry) => {
                   const weather = WEATHER_OPTIONS.find((w) => w.value === entry.weather_type);
+                  const isEditing = editingEntryId === entry.id;
+
                   return (
                     <div key={entry.id} className="entry-card">
                       <span className="entry-date">{entry.entry_date}</span>
-                      <span className="entry-weather">
-                        {weather?.emoji} {weather?.label}
-                      </span>
-                      {entry.note && <span className="entry-note">{entry.note}</span>}
+                      {isEditing ? (
+                        <div className="entry-edit-form">
+                          <select
+                            value={weather?.value || 'sunny'}
+                            onChange={(e) => {
+                              const updatedEntries = entries.map((en) =>
+                                en.id === entry.id ? { ...en, weather_type: e.target.value } : en
+                              );
+                              setEntries(updatedEntries);
+                            }}
+                          >
+                            {WEATHER_OPTIONS.map((opt) => (
+                              <option key={opt.value} value={opt.value}>
+                                {opt.emoji} {opt.label}
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            type="text"
+                            value={entry.note || ''}
+                            onChange={(e) => {
+                              const updatedEntries = entries.map((en) =>
+                                en.id === entry.id ? { ...en, note: e.target.value } : en
+                              );
+                              setEntries(updatedEntries);
+                            }}
+                            placeholder="Note"
+                          />
+                          <div className="entry-edit-actions">
+                            <button
+                              className="btn-save"
+                              onClick={() =>
+                                handleEditEntry(
+                                  entry.id,
+                                  entry.weather_type,
+                                  entry.note
+                                )
+                              }
+                            >
+                              Save
+                            </button>
+                            <button
+                              className="btn-cancel"
+                              onClick={() => {
+                                setEditingEntryId(null);
+                                fetchEntries();
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          <span className="entry-weather">
+                            {weather?.emoji} {weather?.label}
+                          </span>
+                          {entry.note && <span className="entry-note">{entry.note}</span>}
+                          <div className="entry-actions">
+                            <button
+                              className="btn-edit"
+                              onClick={() => setEditingEntryId(entry.id)}
+                            >
+                              ✏️
+                            </button>
+                            <button
+                              className="btn-delete"
+                              onClick={() => handleDeleteEntry(entry.id)}
+                            >
+                              🗑️
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   );
                 })}
