@@ -6,11 +6,6 @@
 
 ## Demo
 
-> **Replace the screenshots below with actual images of your running application.**
-> To capture them, run the app and take screenshots of:
-> 1. The login screen
-> 2. The mood tracker with calendar and entries
-
 ### Screenshot 1 — Login & Mood Selection
 <img width="2879" height="1761" alt="Снимок экрана 2026-04-09 092406" src="https://github.com/user-attachments/assets/bc5cbe63-0860-4893-b062-0091db7f21d4" />
 <img width="2879" height="1750" alt="Снимок экрана 2026-04-09 092450" src="https://github.com/user-attachments/assets/7a98234c-1020-40be-af97-48f23d7699a0" />
