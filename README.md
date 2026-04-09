@@ -12,10 +12,19 @@
 > 2. The mood tracker with calendar and entries
 
 ### Screenshot 1 — Login & Mood Selection
-![Login Screen](docs/images/login-screen.png)
+<img width="2879" height="1761" alt="Снимок экрана 2026-04-09 092406" src="https://github.com/user-attachments/assets/bc5cbe63-0860-4893-b062-0091db7f21d4" />
+<img width="2879" height="1750" alt="Снимок экрана 2026-04-09 092450" src="https://github.com/user-attachments/assets/7a98234c-1020-40be-af97-48f23d7699a0" />
+
+
 
 ### Screenshot 2 — Calendar & Analytics Dashboard
-![Dashboard](docs/images/dashboard.png)
+<img width="2879" height="1748" alt="Снимок экрана 2026-04-09 092240" src="https://github.com/user-attachments/assets/080fd029-5998-41eb-bb10-88f7ca8ac302" />
+
+<img width="2879" height="1769" alt="Снимок экрана 2026-04-09 092257" src="https://github.com/user-attachments/assets/c0a82477-dcc2-4e70-acc6-4c41cc7aca5c" />
+
+<img width="2879" height="1756" alt="Снимок экрана 2026-04-09 092308" src="https://github.com/user-attachments/assets/596730a8-60c2-4db0-b263-59031e1c01fe" />
+
+
 
 ---
 
