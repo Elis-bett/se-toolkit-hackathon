@@ -11,7 +11,16 @@
       "Bash(scp *)",
       "Bash(docker ps *)",
       "Bash(foreach-object *)",
-      "Bash(docker system *)"
+      "Bash(docker system *)",
+      "Bash(pip install *)",
+      "Bash(python *)",
+      "Bash(timeout *)",
+      "Bash(dir *)",
+      "Bash(findstr *)",
+      "Bash(tasklist *)",
+      "Bash(taskkill *)",
+      "Bash(playwright *)",
+      "Bash(del *)"
     ]
   },
   "$version": 3
